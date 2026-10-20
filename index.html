@@ -12,13 +12,17 @@
 <body>
   <header>
     <h1>Hotel Musik</h1>
+    <span id="clock" class="clock"></span>
     <div class="spacer"></div>
     <button id="pause-all" class="ghost">Alle pausieren</button>
+    <button id="resume-all" class="ghost">Alle fortsetzen</button>
     <button id="open-settings" class="icon-btn" aria-label="Einstellungen"></button>
   </header>
   <main id="zones"></main>
   <div id="modal-root"></div>
   <div id="toast" role="status"></div>
   <script src="app.js"></script>
+  <script src="automation.js"></script>
+  <script src="settings.js"></script>
 </body>
 </html>

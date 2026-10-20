@@ -1,6 +1,9 @@
 'use strict';
-const CACHE = 'zonen-v1';
-const ASSETS = ['./', 'index.html', 'app.js', 'style.css', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
+const CACHE = 'zonen-v2';
+const ASSETS = [
+  './', 'index.html', 'app.js', 'automation.js', 'settings.js', 'style.css',
+  'manifest.webmanifest', 'icon-192.png', 'icon-512.png',
+];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
