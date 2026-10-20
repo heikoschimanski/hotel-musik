@@ -146,8 +146,14 @@ async function handleRedirect() {
   history.replaceState(null, '', location.pathname);
   const pending = JSON.parse(localStorage.getItem(PKCE_KEY) || 'null');
   localStorage.removeItem(PKCE_KEY);
-  const z = pending && zoneById(pending.zoneId);
-  if (!z || p.get('state') !== pending.state) return toast('Anmeldung ungültig – bitte erneut versuchen.');
+  if (!pending) {
+    return toast('Anmeldung ungültig: Dieser Browser hat die Anmeldung nicht selbst gestartet. Bitte im selben Browser-Fenster starten und beenden (nicht zwischen App und Chrome wechseln).');
+  }
+  const z = zoneById(pending.zoneId);
+  if (!z) return toast('Anmeldung ungültig: Die Zone existiert nicht mehr.');
+  if (p.get('state') !== pending.state) {
+    return toast('Anmeldung ungültig: Es lief eine neuere Anmeldung. Bitte nur einmal auf „Mit Spotify anmelden“ tippen und den Vorgang beenden.');
+  }
   if (p.has('error')) return toast('Anmeldung abgebrochen: ' + p.get('error'));
   try {
     z.auth = await tokenRequest({
