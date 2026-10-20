@@ -87,6 +87,8 @@ function loadState() {
     s.clientId = DEFAULT_CLIENT_ID;
     s.appliedDefaultClientId = DEFAULT_CLIENT_ID;
   }
+  // sofort sichern: sonst entstehen die Zonen nach dem Spotify-Rücksprung mit neuen IDs
+  localStorage.setItem(STORE, JSON.stringify(s));
   return s;
 }
 
