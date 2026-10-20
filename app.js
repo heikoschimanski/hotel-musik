@@ -71,12 +71,23 @@ function newZone(name) {
   };
 }
 
+// Voreingestellte Client-ID der Spotify-Dashboard-App (öffentlich, kein Geheimnis).
+// Wird einmal pro neuer Voreinstellung übernommen; danach gilt, was in den Einstellungen steht.
+const DEFAULT_CLIENT_ID = 'b30cc967486d4e02ad68042592c9ddd9';
+
 function loadState() {
+  let s = null;
   try {
-    const s = JSON.parse(localStorage.getItem(STORE));
-    if (s && Array.isArray(s.zones)) return s;
+    s = JSON.parse(localStorage.getItem(STORE));
   } catch { /* leer oder defekt -> Standard */ }
-  return { clientId: '', zones: ['Bar', 'Essbereich', 'Flure'].map(newZone) };
+  if (!s || !Array.isArray(s.zones)) {
+    s = { clientId: '', zones: ['Bar', 'Essbereich', 'Flure'].map(newZone) };
+  }
+  if (s.appliedDefaultClientId !== DEFAULT_CLIENT_ID) {
+    s.clientId = DEFAULT_CLIENT_ID;
+    s.appliedDefaultClientId = DEFAULT_CLIENT_ID;
+  }
+  return s;
 }
 
 let state = loadState();
