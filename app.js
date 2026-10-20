@@ -151,7 +151,7 @@ async function handleRedirect() {
       : `${z.name}: ${z.user.name} hat kein Premium – Steuerung wird nicht funktionieren.`);
   } catch (e) {
     z.auth = null;
-    toast('Anmeldung fehlgeschlagen: ' + e.message);
+    toast('Anmeldung fehlgeschlagen: ' + errorText(e));
   }
 }
 
@@ -183,12 +183,18 @@ async function api(z, method, path, body) {
     body: body ? JSON.stringify(body) : undefined,
   });
   const text = await res.text();
-  const data = text ? JSON.parse(text) : null;
+  let data = null;
+  if (text) {
+    try { data = JSON.parse(text); } catch { data = { error: { message: text } }; } // Spotify antwortet manchmal im Klartext
+  }
   if (!res.ok) throw Object.assign(new Error(data?.error?.message || res.statusText), { status: res.status });
   return data;
 }
 
 function errorText(e) {
+  if (/premium subscription required for the owner/i.test(e.message)) {
+    return 'Der Besitzer der Spotify-Developer-App (Dashboard-Account) braucht Premium.';
+  }
   switch (e.status) {
     case 401: return 'Sitzung abgelaufen – bitte neu anmelden.';
     case 404: return 'Lautsprecher nicht erreichbar (in der Spotify-App einmal auswählen?).';

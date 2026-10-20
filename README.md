@@ -18,7 +18,9 @@ Gespielt wird über **Spotify Connect** – das Tablet ist nur die Fernbedienung
 
 ## 1. Spotify-Developer-App anlegen (einmalig)
 
-1. <https://developer.spotify.com/dashboard> → *Create app*.
+1. <https://developer.spotify.com/dashboard> → *Create app*. Der Account, mit dem du die App im
+   Dashboard anlegst, muss **Spotify Premium** haben – sonst antwortet Spotify später mit
+   „Active premium subscription required for the owner of the app“.
 2. **Redirect URI:** die Adresse, unter der die App später läuft (z. B.
    `https://meinhotel.github.io/hotel-musik/`). Die App zeigt sie unter
    *Einstellungen → Redirect-URI* an – sie muss **exakt** übereinstimmen (inkl. `/` am Ende).
