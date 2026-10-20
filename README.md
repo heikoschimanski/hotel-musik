@@ -85,6 +85,32 @@ zurück auf den Lautsprecher.
 
 Die Anmeldung bleibt gespeichert (Refresh-Token).
 
+## Zugriffsschutz vorschalten (Cloudflare Pages + Access)
+
+GitHub Pages ist immer öffentlich. Wer eine echte Anmeldung vor der App will, hostet sie stattdessen bei
+**Cloudflare Pages** und schaltet **Cloudflare Access** davor (Anmeldung per E-Mail-Code, kostenloser Tarif).
+Danach kann das GitHub-Repo auf *privat* gestellt werden. Spotify-Anmeldung und Nutzerfreigabe bleiben unverändert.
+
+1. Kostenloses Konto bei <https://dash.cloudflare.com/sign-up> anlegen.
+2. *Workers & Pages* → *Create* → *Pages* → *Connect to Git* → GitHub-Repo `hotel-musik` wählen.
+   Framework preset **None**, Build command **leer**, Build output directory **`/`** → *Save and Deploy*.
+   Die App läuft dann unter `https://<projektname>.pages.dev/`.
+3. *Zero Trust* öffnen (Team-Name wählen, Free-Tarif).
+4. Im Pages-Projekt *Settings → General → Enable access policy*, dann *Manage*. Unter *Access → Applications*
+   die Anwendung des Projekts öffnen, bei *Public hostname → Subdomain* den Stern `*` löschen und speichern
+   (sonst schützt sie nur Vorschau-Adressen, nicht die Hauptadresse).
+5. Als Regel *Allow* mit *Emails* = die erlaubten Adressen, Anmeldemethode **One-time PIN**.
+   Unter *Overview → Session Duration* „1 month“ wählen (länger geht nicht).
+6. Im privaten Browserfenster testen: Adresse öffnen → E-Mail → Code per Mail.
+7. Im Spotify-Dashboard die neue Adresse als **Redirect URI** ergänzen. Beim Wechsel der Adresse geht der
+   Browser-Speicher des Tablets verloren: vorher *Einstellungen → Allgemein → Exportieren*, danach auf der neuen
+   Adresse *Importieren* und die Zonen neu bei Spotify anmelden.
+8. Erst wenn alles läuft: GitHub-Repo auf *privat* stellen (schaltet GitHub Pages ab).
+
+Hinweise: Mit einer **Bypass**-Regel für die feste IP-Adresse des Hotels kann das Tablet im Haus ohne Code
+starten; da Gäste-WLAN meist dieselbe Adresse nutzt, ist das eine Abwägung. Läuft die Sitzung nach einem Monat ab,
+zeigt das Tablet die Anmeldeseite, dann einmal E-Mail und Code eingeben.
+
 ## Lokal testen (Windows)
 
 ```powershell
